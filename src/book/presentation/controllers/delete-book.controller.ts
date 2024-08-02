@@ -4,9 +4,17 @@ import { DeleteBookUsecase } from "../../application/usecases/delete-book.usecas
 
 export class DeleteBookController {
     constructor(private deleteBookUsecase: DeleteBookUsecase){}
-    async handlerDeleteBook(req: Request, res: Response): Promise<void> {
+    async handlerDeleteBook(req: Request, res: Response) {
+
         const id = req.params.id;
-        await this.deleteBookUsecase.execute(id);
-        res.status(200).json({ message: 'Book deleted successfully' });
+        const result = await this.deleteBookUsecase.execute(id);
+
+        if(result.isLeft()) {
+            // console.log(result.value.message)
+            return res.status(400).json({ statusCode: result.value.statusCode ,message: result.value.message });
+        }
+
+        return res.status(200).json({ message: 'Book deleted successfully' });
+        
     }
 }

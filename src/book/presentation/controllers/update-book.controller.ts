@@ -8,8 +8,11 @@ export class UpdateBookController {
     async updateBookController(req: Request, res: Response){
         const { id } = req.params;
         const book: Book = req.body;
-        await this.updateBookUsecase.execute(id, book);
+        const result = await this.updateBookUsecase.execute(id, book);
 
-        res.status(201).json({message:  "Book update successfully"});
+        if (result.isLeft()) {
+            return res.status(400).json({ message: result.value });
+        }
+        res.status(200).json({message:  "Book update successfully"});
     }
 }

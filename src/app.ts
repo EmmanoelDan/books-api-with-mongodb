@@ -15,6 +15,7 @@ export class Api {
         mongoose.connect(MONGO_URI).then(() => {
             console.log('Connected to MongoDB');
             app.use("/book-api/v1", bookRouter)
+
             app.listen(port, () => {
               console.log(`Server running on port ${port}`);
             });

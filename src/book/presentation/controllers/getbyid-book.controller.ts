@@ -7,7 +7,10 @@ export class GetByIdBookController {
     async handlerGetByIdBook(req: Request, res: Response){
         const id = req.params.id
         const result = await this.getByIdUsecase.execute(id)
-        // console.log(result)
-        res.status(201).json({data: result});
+        if(result.isLeft()){
+            res.status(400).json({ error: result.value });
+            return;
+        }
+        res.status(200).json({data: result});
     }
 }

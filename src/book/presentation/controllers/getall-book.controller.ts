@@ -6,7 +6,11 @@ export class GetAllBookController {
 
     async handlerGetAllBook(req: Request, res: Response){
         const result = await this.getAllBook.execute()
+
+        if(result.isLeft()) {
+            return res.status(404).json({ message: result.value.message });
+        }
         // console.log(result)
-        res.status(201).json({data: result});
+        res.status(200).json(result.value);
     }
 }
